@@ -1,7 +1,12 @@
-const SearchBox = () => {
+const SearchBox = ({filterOnSearch}) => {
     return (
-        <div>
-            <input type='search' placeholder='a' className='pa3 ba b--green bg-lightest-blue'/>
+        <div className='pa2'>
+            <input
+                type='search'
+                placeholder='search robots'
+                className='pa3 ba b--green bg-lightest-blue'
+                onChange={filterOnSearch}
+            />
         </div>
     );
 }
