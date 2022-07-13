@@ -1,0 +1,31 @@
+/* Note: align-items will shorten the inner container, unless we define
+ its width */
+.app {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  /*align-content: center;*/
+  /*width: 100%;*/
+  min-height: 100vh;
+  text-align: center;
+  padding: 0 3rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background: #70a470;
+  box-shadow: 0 0 15px black;
+  transition: transform 1s;
+}
+
+.card:hover {
+    transform: scale(1.3);
+}
+
+.app input {
+  box-shadow: inset 0 0 1px black;
+  background: transparent;
+  text-align: center;
+}
