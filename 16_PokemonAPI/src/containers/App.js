@@ -16,7 +16,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        fetch('https://pokeapi.co/api/v2/pokemon/')
+        fetch('https://pokeapi.co/api/v2/pokemon/?limit=151')
             .then(res => res.json())
             .then(res => {
                     this.setState({
@@ -35,7 +35,7 @@ class App extends Component {
     render() {
         const {error, isLoaded, searchField, pokemons} = this.state;
         const filteredPokemons = pokemons.filter(
-            pokemon => pokemon.name.includes(searchField)
+            pokemon => pokemon.name.includes(searchField.toLowerCase())
         );
         if (error)
             return <div className='app'>Error: {error.message}</div>
@@ -43,8 +43,7 @@ class App extends Component {
             return <div className='app'>Loading...</div>
         return (
             <div className='app'>
-                <Title>Pokemons</Title>
-                {/*<h2>Search here:</h2>*/}
+                <Title>Pokémons</Title>
                 <SearchBox onTyping={this.updateSearchField}/>
                 <PokemonList pokemon={filteredPokemons}/>
             </div>
