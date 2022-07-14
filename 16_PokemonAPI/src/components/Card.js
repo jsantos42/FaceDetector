@@ -25,7 +25,9 @@ class Card extends Component {
     async getData() {
         const movesPromise = await fetch(this.props.url)
         const movesObj = await movesPromise.json()
-        this.setState({moves: movesObj.moves.map(i => i.move.name)})
+        this.setState({
+            gotData: true,
+            moves: movesObj.moves.map(i => i.move.name)})
     }
 
     // /* Old way */
