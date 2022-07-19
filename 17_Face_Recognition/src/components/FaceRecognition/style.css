@@ -1,0 +1,14 @@
+.face {
+    /*padding: 1rem;*/
+    /*align-self: flex-end;*/
+    /*max-width: 1200px;*/
+    width: 80%;
+    max-width: 1000px;
+    z-index: 1;
+    padding: 2rem;
+}
+
+.face img {
+    width: 80%;
+    box-shadow: 0 0 10px black;
+}
