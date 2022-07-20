@@ -1,6 +1,6 @@
 import './style.css'
 
-const ImageLinkForm = ({onChange, onSubmit, onKeyUp}) => {
+const ImageLinkForm = ({onChange, onSubmit}) => {
     return (
         <div className={'main center'}>
             <p>Insert a link to an image, I will detect the faces on it!</p>
