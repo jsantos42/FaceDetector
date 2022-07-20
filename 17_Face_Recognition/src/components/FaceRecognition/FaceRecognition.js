@@ -1,5 +1,4 @@
 import './style.css'
-import {Component} from "react";
 
 const FaceRecognition = ({imgUrl, box}) => {
     if (imgUrl.length !== 0) {

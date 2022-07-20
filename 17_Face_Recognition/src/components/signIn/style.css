@@ -1,0 +1,60 @@
+.sign {
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.sign form {
+    width: 90%;
+    max-width: 350px;
+    padding: 2rem;
+    /*box-shadow: 0 0 5px 0 black;*/
+}
+
+.sign fieldset {
+    border: none;
+    padding: 1rem 0;
+    margin: 0;
+    gap: 0.5rem;
+}
+
+.sign legend {
+    font-weight: 800;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.sign input {
+    padding: 0.3rem;
+    border: 1px solid black;
+    background: none;
+    font-weight: 600;
+}
+
+.sign input:focus {
+    background: white;
+}
+
+.sign label {
+    padding: 1rem 0 0.3rem 0;
+}
+
+.signData {
+    font-weight: 600;
+}
+
+#signButton {
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.5rem 1.3rem;
+    border-radius: 10px;
+    background: none;
+    cursor: pointer;
+    box-shadow: 0 0 3px 1px black;
+}
+
+#signButton:hover {
+    box-shadow: 0 0 3px 1px inset black;
+    /*transform: scale(1.1);*/
+ }
+

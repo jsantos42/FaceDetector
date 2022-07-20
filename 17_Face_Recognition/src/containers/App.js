@@ -3,12 +3,13 @@ import Nav from "../components/nav/Nav";
 import Logo from "../components/logo/Logo";
 import ImageLinkForm from "../components/imageLinkForm/ImageLinkForm";
 import Rank from "../components/rank/Rank";
-import ParticlesBg from "../components/ParticlesBg";
+import ParticlesBg from "../components/particlesBg/ParticlesBg";
 import FaceRecognition from "../components/FaceRecognition/FaceRecognition";
 import {Component} from "react";
 import Clarifai from 'clarifai'
 import apiKey from "../api";
 import {loadFull} from "tsparticles";
+import SignIn from "../components/signIn/SignIn";
 
 // This must be passed as a parameter to the component, otherwise it will
 // rerender everytime we write a character in input.
@@ -62,12 +63,13 @@ class App extends Component {
     render() {
         return (
             <div className="app">
-                <ParticlesBg init={particlesInit}/>
+                {/*<ParticlesBg init={particlesInit}/>*/}
                 <Nav/>
                 <Logo/>
-                <Rank/>
-                <ImageLinkForm onChange={this.onInputChange} onSubmit={this.onButtonSubmit}/>
-                <FaceRecognition imgUrl={this.state.imageUrl} box={this.state.faceBox}/>
+                <SignIn />
+                {/*<Rank/>*/}
+                {/*<ImageLinkForm onChange={this.onInputChange} onSubmit={this.onButtonSubmit}/>*/}
+                {/*<FaceRecognition imgUrl={this.state.imageUrl} box={this.state.faceBox}/>*/}
             </div>
         );
     }
