@@ -9,7 +9,7 @@ import {Component} from "react";
 import Clarifai from 'clarifai'
 import apiKey from "../api";
 import {loadFull} from "tsparticles";
-import SignIn from "../components/signIn/SignIn";
+import SignForm from "../components/signForm/SignForm";
 
 // This must be passed as a parameter to the component, otherwise it will
 // rerender everytime we write a character in input.
@@ -30,6 +30,8 @@ class App extends Component {
             input: '',
             imageUrl: '',
             faceBox: {},
+            route: 'signForm',
+            form: 'signIn',
         }
     }
 
@@ -53,23 +55,36 @@ class App extends Component {
 
     onInputChange = (e) => this.setState({input: e.target.value})
 
-    onButtonSubmit = () => {
+    onButtonSubmit = (e) => {
         this.setState({imageUrl: this.state.input});
         clarifai.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
             .then(response => this.displayFaceBox(this.getFaceBox(response)))
             .catch(error => console.log(error));
     }
 
+    // The preventDefault() avoids the warning "Form submission canceled because
+    // the form is not connected"
+    onRouteChange = (event, route) => {
+        event.preventDefault();
+        this.setState({route: route})
+    }
+
+    onFormChange = (form) => this.setState(({form: form}))
+
     render() {
+        const { imageUrl, faceBox, route,form } = this.state;
         return (
             <div className="app">
                 {/*<ParticlesBg init={particlesInit}/>*/}
-                <Nav/>
-                <Logo/>
-                <SignIn />
-                {/*<Rank/>*/}
-                {/*<ImageLinkForm onChange={this.onInputChange} onSubmit={this.onButtonSubmit}/>*/}
-                {/*<FaceRecognition imgUrl={this.state.imageUrl} box={this.state.faceBox}/>*/}
+                <Nav onRouteChange={this.onRouteChange} route={route}/>
+                {route === 'signForm'
+                    ? <SignForm form={form} onRouteChange={this.onRouteChange} onFormChange={this.onFormChange}/>
+                    : <>
+                        <Rank/>
+                        <ImageLinkForm onChange={this.onInputChange} onSubmit={this.onButtonSubmit}/>
+                        <FaceRecognition imgUrl={imageUrl} box={faceBox}/>
+                    </>
+                }
             </div>
         );
     }

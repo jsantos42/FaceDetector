@@ -1,9 +1,14 @@
 import './style.css'
+import Logo from "../logo/Logo";
 
-const Nav = () => {
+const Nav = ({onRouteChange, route}) => {
     return (
         <nav>
-           <h3>Sign Out</h3>
+            <Logo/>
+            {route === 'home'
+                ? <h3 onClick={(e) => onRouteChange(e, 'signForm')}>Sign Out</h3>
+                : null
+            }
         </nav>
     )
 }

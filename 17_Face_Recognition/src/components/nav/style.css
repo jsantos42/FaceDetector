@@ -1,8 +1,9 @@
 nav {
     display: flex;
-    justify-content: flex-end;
+    width: 100%;
+    justify-content: space-between;
     padding: 1rem;
-    align-self: flex-end;
+    box-sizing: border-box;
 }
 
 nav h3 {

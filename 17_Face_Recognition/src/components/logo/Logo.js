@@ -3,7 +3,6 @@ import Ai from './chip.png'
 
 const Logo = () => {
     const div = {
-        margin: '0 2rem',
         display: 'flex',
         justifyContent: 'flex-start',
         alignSelf: 'flex-start',
