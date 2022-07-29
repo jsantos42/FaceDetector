@@ -75,7 +75,7 @@ class App extends Component {
         const { imageUrl, faceBox, route,form } = this.state;
         return (
             <div className="app">
-                {/*<ParticlesBg init={particlesInit}/>*/}
+                <ParticlesBg init={particlesInit}/>
                 <Nav onRouteChange={this.onRouteChange} route={route}/>
                 {route === 'signForm'
                     ? <SignForm form={form} onRouteChange={this.onRouteChange} onFormChange={this.onFormChange}/>
