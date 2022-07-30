@@ -13,21 +13,3 @@ code {
     monospace;
 }
 
-button {
-  cursor: pointer;
-}
-
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.col {
-  display: flex;
-  flex-direction: column;
-}
-
-a {
-  cursor: pointer;
-}

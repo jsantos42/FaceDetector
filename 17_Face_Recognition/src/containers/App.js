@@ -1,41 +1,77 @@
-import './App.css';
+import {useState} from "react";
+import {loadFull} from "tsparticles";
+import Clarifai from 'clarifai'
+// For some reason, I cannot import styled-components the normal way (probably
+// because of the Clarify API making me use ReactApp v4
+// import styled from "styled-components";
+import styled from "styled-components/dist/styled-components.js";
+
+import myAPIKey from "../api";
 import Nav from "../components/nav/Nav";
-import Logo from "../components/logo/Logo";
 import ImageLinkForm from "../components/imageLinkForm/ImageLinkForm";
 import Rank from "../components/rank/Rank";
 import ParticlesBg from "../components/particlesBg/ParticlesBg";
 import FaceRecognition from "../components/FaceRecognition/FaceRecognition";
-import {Component} from "react";
-import Clarifai from 'clarifai'
-import apiKey from "../api";
-import {loadFull} from "tsparticles";
 import SignForm from "../components/signForm/SignForm";
 
+//==============================================================================
+// PARTICLES BACKGROUND
+//==============================================================================
 // This must be passed as a parameter to the component, otherwise it will
 // rerender everytime we write a character in input.
-const particlesInit = async (main) => {
-    console.log(main);
-    await loadFull(main);
-};
+const particlesInit = async (main) => await loadFull(main);
 
-//API initialization
+
+//==============================================================================
+// API INITIALIZATION
+//==============================================================================
 const clarifai = new Clarifai.App({
-    apiKey: apiKey,
+    apiKey: myAPIKey,
 })
 
-class App extends Component {
-    constructor() {
-        super();
-        this.state = {
-            input: '',
-            imageUrl: '',
-            faceBox: {},
-            route: 'signForm',
-            form: 'signIn',
-        }
-    }
 
-    getFaceBox = (data) => {
+//==============================================================================
+// APP STYLING
+//==============================================================================
+const AppDiv = styled.div`
+  //display: flex;
+  //flex-direction: column;
+  ///*justify-content: center;*/
+  //align-items: center;
+  //min-height: 100vh;
+  
+  .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  a {
+    cursor: pointer;
+  }
+  
+  button {
+    cursor: pointer;
+  }
+`;
+
+
+//==============================================================================
+// APP ITSELF
+//==============================================================================
+const App = () => {
+    const [input, setInput] = useState('');
+    const [imageUrl, setImageUrl] = useState('');
+    const [faceBox, setFaceBox] = useState({});
+    const [route, setRoute] = useState('signForm');
+    const [form, setForm] = useState('signIn');
+
+    const getFaceBox = (data) => {
         // for (let i in data.outputs[0].data.regions) {
         let faceBox = data.outputs[0].data.regions[0].region_info.bounding_box;
         // console.log("bounding box", faceBox);
@@ -48,46 +84,40 @@ class App extends Component {
         // }
     }
 
-    displayFaceBox = box => {
-        this.setState({faceBox: box});
-        console.log('display', box);
-    }
+    const displayFaceBox = box => setFaceBox(box);
 
-    onInputChange = (e) => this.setState({input: e.target.value})
+    const onInputChange = (e) => setInput(e.target.value);
 
-    onButtonSubmit = (e) => {
-        this.setState({imageUrl: this.state.input});
-        clarifai.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
-            .then(response => this.displayFaceBox(this.getFaceBox(response)))
+    const onFormChange = (form) => setForm(form);
+
+    const onButtonSubmit = (e) => {
+        setImageUrl(input);
+        clarifai.models.predict(Clarifai.FACE_DETECT_MODEL, input)
+            .then(response => displayFaceBox(getFaceBox(response)))
             .catch(error => console.log(error));
     }
 
     // The preventDefault() avoids the warning "Form submission canceled because
     // the form is not connected"
-    onRouteChange = (event, route) => {
+    const onRouteChange = (event, route) => {
+        setRoute(route);
         event.preventDefault();
-        this.setState({route: route})
     }
 
-    onFormChange = (form) => this.setState(({form: form}))
-
-    render() {
-        const { imageUrl, faceBox, route,form } = this.state;
-        return (
-            <div className="app">
-                <ParticlesBg init={particlesInit}/>
-                <Nav onRouteChange={this.onRouteChange} route={route}/>
-                {route === 'signForm'
-                    ? <SignForm form={form} onRouteChange={this.onRouteChange} onFormChange={this.onFormChange}/>
-                    : <>
-                        <Rank/>
-                        <ImageLinkForm onChange={this.onInputChange} onSubmit={this.onButtonSubmit}/>
-                        <FaceRecognition imgUrl={imageUrl} box={faceBox}/>
-                    </>
-                }
-            </div>
-        );
-    }
+    return (
+        <AppDiv>
+            <ParticlesBg init={particlesInit}/>
+            <Nav onRouteChange={onRouteChange} route={route}/>
+            {route === 'signForm'
+                ? <SignForm form={form} onRouteChange={onRouteChange} onFormChange={onFormChange}/>
+                : <>
+                    <Rank/>
+                    <ImageLinkForm onChange={onInputChange} onSubmit={onButtonSubmit}/>
+                    <FaceRecognition imgUrl={imageUrl} box={faceBox}/>
+                </>
+            }
+        </AppDiv>
+    );
 }
 
 export default App;
