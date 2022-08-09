@@ -1,0 +1,10 @@
+/*
+Font face and styled-components don't seem to work that well, hence this css
+file. Note that the font is a .ttf, but ideally should be a .woff or .woff2
+ */
+@font-face {
+    font-family: 'CONFORTA';
+    font-style: normal;
+    font-weight: normal;
+    /*src: local('CONFORTA'), url('../../res/fonts/Comfortaa-Bold.ttf');*/
+}
