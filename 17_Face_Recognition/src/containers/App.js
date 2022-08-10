@@ -34,11 +34,7 @@ const clarifai = new Clarifai.App({
 // APP STYLING
 //==============================================================================
 const AppDiv = styled.div`
-  //display: flex;
-  //flex-direction: column;
-  ///*justify-content: center;*/
-  //align-items: center;
-  //min-height: 100vh;
+  min-height: 100vh;
   
   .center {
     display: flex;
@@ -106,7 +102,7 @@ const App = () => {
 
     return (
         <AppDiv>
-            <ParticlesBg init={particlesInit}/>
+            {/*<ParticlesBg init={particlesInit}/>*/}
             <Nav onRouteChange={onRouteChange} route={route}/>
             {route === 'signForm'
                 ? <SignForm form={form} onRouteChange={onRouteChange} onFormChange={onFormChange}/>
