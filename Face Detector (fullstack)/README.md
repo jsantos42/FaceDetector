@@ -1,4 +1,7 @@
 # Face Detector 
+
+![screenshot](sample.gif)
+
 Fullstack project, with API endpoints and login access.
 - It allows the user to Sign In (or register him/herself if it's a new user) 
 - The user can then paste a link to an image with a human face on it
