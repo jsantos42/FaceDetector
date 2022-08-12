@@ -8,6 +8,6 @@ with the location of the face
 increment
 
 ### How to run:
-Go to both the frontend and backend folders and run:
-`npm install`\
+Go to both the frontend and backend folders and run: \
+`npm install` \
 `npm start`

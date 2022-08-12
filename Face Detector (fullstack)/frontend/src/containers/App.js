@@ -131,8 +131,10 @@ const App = () => {
 	}
 	
 	const onRouteChange = (route, user) => {
-		if (route === 'signForm')
+		if (route === 'signForm') {
 			setForm('signIn')
+			setImageUrl('')
+		}
 		setCurrentUser(user);
 		setRoute(route);
 	}
