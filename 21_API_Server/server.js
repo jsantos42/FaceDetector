@@ -1,6 +1,22 @@
 const express = require('express');
 const app = express();
 
+//==============================================================================
+// CROSS-ORIGIN RESOURCE SHARING (when in the middleware, prevents the "No
+// Access-Control-Allow-Origin" CORS block")
+//==============================================================================
+const cors = require('cors');
+
+//==============================================================================
+// ENCRYPTING PASSWORDS
+//==============================================================================
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
+
+//==============================================================================
+// "DATABASE"
+//==============================================================================
 const database = {
 	users: [
 		{
@@ -22,10 +38,12 @@ const database = {
 	]
 }
 
+
 //==============================================================================
 // MIDDLEWARE
 //==============================================================================
-app.use(express.json())
+app.use(express.json()); // converts request body info to json format
+app.use(cors()); // prevents the "No Access-Control-Allow-Origin" CORS block
 
 
 //==============================================================================
@@ -43,33 +61,52 @@ app.get('/', (req, res) => {
 	res.send(database.users);
 })
 
-app.post('/signIn', (req, res) => {
-	const {email, password} = req.body;
-	database.users.forEach(user => {
-		if (email === user.email && password === user.password)
-			res.json('success');
-		else
-			res.status(400).json('error logging in');
-	})
-})
-
 app.post('/register', (req, res) => {
 	const {email, name, password} = req.body;
-	database.users.push({
+	
+	// I'm having trouble to retrieve the hash from this promise
+	// bcrypt.hash(password, saltRounds, (err, hash) => {
+	// 	console.log(hash)
+	// })
+	if (!database.users.filter(user => user.email === email).length) {
+		const newUser = {
 			id: Number(database.users.slice(-1)[0].id) + 1,
 			name: name,
 			email: email,
 			password: password,
 			entries: 0,
 			joined: new Date(),
-	});
-	res.json(database.users.slice(-1)[0]);
+		}
+		database.users.push(newUser);
+		res.json(newUser);
+	}
+	else
+		res.json('email already registered');
 })
 
+app.post('/signIn', (req, res) => {
+	const	{email, password} = req.body;
+	// bcrypt.compare(password, '$2b$10$.rysdb.wu2h85ajtrdgfr./v4bgnei0jptl2yeo6ggxpvy/zdm.aq', (err, res) =>{
+	// 	console.log('first', res);
+	// })
+	// bcrypt.compare('vag', '$2b$10$.rysdb.wu2h85ajtrdgfr./v4bgnei0jptl2yeo6ggxpvy/zdm.aq', (err, res) =>{
+	// 	console.log('second', res);
+	// })
+	let		found = false;
+	database.users.forEach(user => {
+		if (email === user.email && password === user.password) {
+			found = true;
+			res.json(user);
+		}
+	})
+	if (!found)
+		res.status(400).json('error logging in');
+})
+
+
 app.get('/profile/:id', (req, res) => {
-	const {id} = req.params;
-	
-	let found = false;
+	const	{id} = req.params;
+	let		found = false;
 	database.users.forEach(i => {
 		if (i.id === Number(id)) {
 			found = true

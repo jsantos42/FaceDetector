@@ -1,13 +1,12 @@
 import './style.css'
 
-const Rank = () => {
+const Rank = ({user}) => {
     return (
         <div className={'rank center'}>
-            <p>{'User, your current rank is ...'}</p>
-            <p>{'#5'}</p>
+            <p>{`${user.name}, your current entry count is ...`}</p>
+            <p>{`${user.entries}`}</p>
         </div>
     )
-
 }
 
 export default Rank;
