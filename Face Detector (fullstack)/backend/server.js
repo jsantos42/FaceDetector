@@ -36,6 +36,13 @@ app.listen(port, () => {
 	console.log(`app is running on port ${port}`);
 })
 
+// Controllers
+const {users} = require("./controllers/users");
+const {profile} = require("./controllers/profile");
+const {register} = require("./controllers/register");
+const {signIn} = require("./controllers/signIn");
+const {entries} = require("./controllers/entries");
+
 
 //==============================================================================
 //	ENDPOINTS  (always plan first what endpoints you want on your API)
@@ -47,14 +54,7 @@ app.listen(port, () => {
  *	Body: (empty)
  *	@return an array with all users on the database
  */
-app.get('/', (req, res) => {
-	db.select().from('users').then(users => {
-		if (users.length)
-			res.json(users);
-		else
-			res.status(400).json('No users on the database');
-	})
-})
+app.get('/', (req, res) => users(req, res, db));
 
 
 /**
@@ -64,20 +64,7 @@ app.get('/', (req, res) => {
  *	Body: (empty)
  *	@return the specified user
  */
-/*
-(1) Here we're using the 'key, value' syntax, but if using the object one, we
-could have:  .where({ id: id })     or with destructuring in ES6:   .where({id})
- */
-app.get('/profile/:id', (req, res) => {
-	const {id} = req.params;
-	db.select().from('users').where('id', id)						// (1)
-		.then(user => {
-			if (user.length)
-				res.json(user[0]);
-			else
-				res.status(400).json('no such user');
-		})
-})
+app.get('/profile/:id', (req, res) => profile(req, res, db));
 
 
 /**
@@ -87,48 +74,8 @@ app.get('/profile/:id', (req, res) => {
  *	Body: json object that has the email, name and password of the new user
  *	@return the newly registered user
  */
-/*
-(1) Transactions make sure that, when doing multiple operations on a database,
-if one fails they all fail, avoiding inconsistencies in a database (for example,
-between tables). It should be used if you need to do operations that are related
-(in this example, when adding a user to both the 'users' and 'login' table)
-(2) the into(<table>) is the same as trx(<table>)
-(3) makes sure it returns the whole row of the inserted user
-(4) makes sure the transaction is executed if every operation went well.
-Otherwise, rollback() undoes any changes to the database.
-(5) catches the error when you try to register the same user twice. However, you
-do NOT want to return the 'err' object, because you'd be revealing that that
-user is already registered on your db! So, just return a vague string.
- */
-app.post('/register', (req, res) => {
-	const {email, name, password} = req.body;
-	bcrypt.hash(password, saltRounds, (err, hash) => {
-		db.transaction(trx => trx									// (1)
-			.insert({
-				email: email,
-				hash: hash,
-			})
-			.into('login')											// (2)
-			.returning('email')
-			.then(emailObjArray => trx
-				.insert({
-					name: name,
-					email: emailObjArray[0].email,
-					joined: new Date(),
-				})
-				.into('users')										// (2)
-				.returning(['*'])									// (3)
-				.then(user => res.json(user[0]))
-			)
-			.then(trx.commit)										// (4)
-			.catch(trx.rollback)
-		)
-		.catch(err => {
-			console.log(err);
-			res.status(400).json('unable to register');	// (5)
-		});
-	})
-})
+app.post('/register', (req, res) => register(req, res, db, bcrypt, saltRounds));
+
 
 /**
  *	SIGN IN
@@ -137,29 +84,7 @@ app.post('/register', (req, res) => {
  *	Body: json object that has the email and password of the user
  *	@return the user that signed in
  */
-app.post('/signIn', (req, res) => {
-	const {email, password} = req.body;
-	const errorMessage = 'Wrong credentials.';
-	db.select('email', 'hash').from('login').where('email', email)
-		.then(data => {
-			bcrypt.compare(password, data[0].hash, (err, isPasswordValid) => {
-				if (isPasswordValid) {
-					db.select().from('users').where('email', email)
-						.then(user => res.json(user[0]))
-						.catch(err => {
-							console.log(err);
-							res.status(400).json('unable to get user');
-						});
-				}
-				else
-					res.status(400).json(errorMessage);
-			})
-		})
-		.catch(err => {
-			console.log(err);
-			res.status(400).json(errorMessage);
-		});
-})
+app.post('/signIn', (req, res) => signIn(req, res, db, bcrypt));
 
 
 /**
@@ -169,15 +94,4 @@ app.post('/signIn', (req, res) => {
  *	Body: json object that has the id of the current user
  *	@return the updated value of entries
  */
-app.put('/entries', (req, res) => {
-	db('users')
-		.returning('entries')
-		.where('id', req.body.id)
-		.increment('entries', 1)
-		.then(userEntries => {
-			if (userEntries.length)
-				res.json(userEntries[0].entries);
-			else
-				res.status(400).json('unable to get entries');
-		});
-})
+app.put('/entries', (req, res) => entries(req, res, db));
