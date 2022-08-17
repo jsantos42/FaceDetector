@@ -41,6 +41,7 @@ const SignForm = ({form, errorMessage, onRouteChange, onFormChange, onError}) =>
 			  else
 				  onError(res);
 			})
+			.catch(err => onError('Could not reach server.'));
 		event.preventDefault();											// (3)
 	}
 	
