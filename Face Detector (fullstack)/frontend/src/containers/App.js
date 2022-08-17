@@ -67,7 +67,7 @@ const AppDiv = styled.div`
 const App = () => {
 	const [input, setInput] = useState('');
 	const [imageUrl, setImageUrl] = useState('');
-	const [faceBox, setFaceBox] = useState({});
+	const [faceBox, setFaceBox] = useState([]);
 	const [route, setRoute] = useState('signForm');
 	const [form, setForm] = useState('signIn');
 	const [currentUser, setCurrentUser] = useState({});
@@ -86,16 +86,18 @@ const App = () => {
 	// }, [])
 	
 	const getFaceBox = (data) => {
-		// for (let i in data.outputs[0].data.regions) {
-		let faceBox = data.outputs[0].data.regions[0].region_info.bounding_box;
-		// console.log("bounding box", faceBox);
-		return {
-			leftCol: faceBox.left_col * 100,
-			topRow: faceBox.top_row * 100,
-			rightCol: (1 - faceBox.right_col) * 100,
-			bottomRow: (1 - faceBox.bottom_row) * 100,
-		}
-		// }
+		if (data.outputs[0].data.regions)
+			return data.outputs[0].data.regions.map(i => {
+				let box = i.region_info.bounding_box;
+				return {
+					leftCol: box.left_col * 100,
+					topRow: box.top_row * 100,
+					rightCol: (1 - box.right_col) * 100,
+					bottomRow: (1 - box.bottom_row) * 100,
+				}
+			})
+		else
+			return [];
 	}
 	
 	/*
@@ -107,11 +109,13 @@ const App = () => {
 			method: 'put',
 			headers: {'content-type': 'application/json'},
 			body: JSON.stringify({id: currentUser.id}),
-		}).then(res => res.json())
-			.then(count => setCurrentUser(user => ({
+		})
+	 	.then(res => res.json())
+	 	.then(count => setCurrentUser(user => ({
 				...user,
 				entries: count,
-			})));
+			})))
+		.catch(err => console.log(err));
 	}
 	
 	const onInputChange = (e) => setInput(e.target.value);
