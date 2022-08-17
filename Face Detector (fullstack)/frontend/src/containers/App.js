@@ -6,7 +6,6 @@ import Clarifai from 'clarifai'
 // import styled from "styled-components";
 import styled from "styled-components/dist/styled-components.js";
 
-import myAPIKey from "../api";
 import Nav from "../components/nav/Nav";
 import ImageLinkForm from "../components/imageLinkForm/ImageLinkForm";
 import Rank from "../components/rank/Rank";
@@ -20,14 +19,6 @@ import SignForm from "../components/signForm/SignForm";
 // This must be passed as a parameter to the component, otherwise it will
 // rerender everytime we write a character in input.
 const particlesInit = async (main) => await loadFull(main);
-
-
-//==============================================================================
-// API INITIALIZATION
-//==============================================================================
-const clarifai = new Clarifai.App({
-	apiKey: myAPIKey,
-})
 
 
 //==============================================================================
@@ -130,13 +121,19 @@ const App = () => {
 	const onPictureSubmit = (e) => {
 		setImageUrl(input);
 		if (input) {
-			clarifai.models.predict(Clarifai.FACE_DETECT_MODEL, input)
-				.then(response => {
-					if (response)
-						incrementUserEntries();
+			fetch('http://localhost:3000/analyseImage', {
+				method: 'post',
+				headers: {'content-type': 'application/json'},
+				body: JSON.stringify({input}),
+			})
+		  	.then(response => response.json())
+		  	.then(response => {
+				if (response && typeof response === "object") {
+					incrementUserEntries();
 					setFaceBox(getFaceBox(response))
-				})
-				.catch(error => console.log(error));
+				}
+			})
+		  	.catch(error => console.log(error));
 		}
 	}
 	

@@ -41,6 +41,7 @@ const {users} = require("./controllers/users");
 const {profile} = require("./controllers/profile");
 const {register} = require("./controllers/register");
 const {signIn} = require("./controllers/signIn");
+const {analyseImage} = require("./controllers/analyseImage");
 const {entries} = require("./controllers/entries");
 
 
@@ -86,6 +87,14 @@ app.post('/register', (req, res) => register(req, res, db, bcrypt, saltRounds));
  */
 app.post('/signIn', (req, res) => signIn(req, res, db, bcrypt));
 
+/**
+ *	SEND IMAGE URL TO CLARIFAI
+ *	Endpoint: '/analyseImage'
+ *	Method: POST
+ *	Body: json object that has the image url
+ *	@return the output of the clarifai API with the faceBoxes position
+ */
+app.post('/analyseImage', analyseImage);
 
 /**
  *	INCREMENT THE ENTRIES VALUE OF THE CURRENT USER
