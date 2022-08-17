@@ -70,7 +70,7 @@ could have:  .where({ id: id })     or with destructuring in ES6:   .where({id})
  */
 app.get('/profile/:id', (req, res) => {
 	const {id} = req.params;
-	db.select().from('users').where('id', id)			// (1)
+	db.select().from('users').where('id', id)						// (1)
 		.then(user => {
 			if (user.length)
 				res.json(user[0]);
@@ -123,32 +123,41 @@ app.post('/register', (req, res) => {
 			.then(trx.commit)										// (4)
 			.catch(trx.rollback)
 		)
-		.catch(err => res
-			.status(400)
-			.json('unable to register'));						// (5)
-		})
+		.catch(err => {
+			console.log(err);
+			res.status(400).json('unable to register');	// (5)
+		});
+	})
 })
 
 /**
- * needing description
+ *	SIGN IN
+ *	Endpoint: '/signIn'
+ *	Method: POST
+ *	Body: json object that has the email and password of the user
+ *	@return the user that signed in
  */
 app.post('/signIn', (req, res) => {
 	const {email, password} = req.body;
-	// bcrypt.compare(password, '$2b$10$.rysdb.wu2h85ajtrdgfr./v4bgnei0jptl2yeo6ggxpvy/zdm.aq', (err, res) =>{
-	// 	console.log('first', res);
-	// })
-	// bcrypt.compare('vag', '$2b$10$.rysdb.wu2h85ajtrdgfr./v4bgnei0jptl2yeo6ggxpvy/zdm.aq', (err, res) =>{
-	// 	console.log('second', res);
-	// })
-	let found = false;
-	database.users.forEach(user => {
-		if (email === user.email && password === user.password) {
-			found = true;
-			res.json(user);
-		}
-	})
-	if (!found)
-		res.status(400).json('error logging in');
+	db.select('email', 'hash').from('login').where('email', email)
+		.then(data => {
+			bcrypt.compare(password, data[0].hash, (err, isPasswordValid) => {
+				if (isPasswordValid) {
+					db.select().from('users').where('email', email)
+						.then(user => res.json(user[0]))
+						.catch(err => {
+							console.log(err);
+							res.status(400).json('unable to get user');
+						});
+				}
+				else
+					res.status(400).json('wrong credentials');
+			})
+		})
+		.catch(err => {
+			console.log(err);
+			res.status(400).json('wrong credentials');
+		});
 })
 
 
