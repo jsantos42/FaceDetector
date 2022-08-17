@@ -3,7 +3,7 @@ const users = (req, res, db) => {
 		if (users.length)
 			res.json(users);
 		else
-			res.status(400).json('No users on the database');
+			res.status(400).json('No users on the database.');
 	})
 }
 

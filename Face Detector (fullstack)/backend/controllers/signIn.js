@@ -12,7 +12,7 @@ const signIn = (req, res, db, bcrypt) => {
 							  .then(user => res.json(user[0]))
 							  .catch(err => {
 								  console.log(err);
-								  res.status(400).json('unable to get user');
+								  res.status(400).json('Unable to get user.');
 							  });
 					 }
 					 else
