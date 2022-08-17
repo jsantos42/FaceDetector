@@ -71,6 +71,7 @@ const App = () => {
 	const [route, setRoute] = useState('signForm');
 	const [form, setForm] = useState('signIn');
 	const [currentUser, setCurrentUser] = useState({});
+	const [errorMessage, setErrorMessage] = useState('');
 	
 	/*
 	Note that use Effect might seem to be called twice, despite having no
@@ -102,7 +103,7 @@ const App = () => {
 	operator to pass the rest of the object.
 	 */
 	const incrementUserEntries = () => {
-		fetch('http://localhost:3000/image', {
+		fetch('http://localhost:3000/entries', {
 			method: 'put',
 			headers: {'content-type': 'application/json'},
 			body: JSON.stringify({id: currentUser.id}),
@@ -115,7 +116,12 @@ const App = () => {
 	
 	const onInputChange = (e) => setInput(e.target.value);
 	
-	const onFormChange = (form) => setForm(form);
+	const onFormChange = (form) => {
+		setForm(form);
+		setErrorMessage('');
+	}
+	
+	const onError = (str) => setErrorMessage(str);
 	
 	const onPictureSubmit = (e) => {
 		setImageUrl(input);
@@ -132,8 +138,9 @@ const App = () => {
 	
 	const onRouteChange = (route, user) => {
 		if (route === 'signForm') {
-			setForm('signIn')
-			setImageUrl('')
+			setForm('signIn');
+			setImageUrl('');
+			setErrorMessage('');
 		}
 		setCurrentUser(user);
 		setRoute(route);
@@ -144,7 +151,11 @@ const App = () => {
 			{/*<ParticlesBg init={particlesInit}/>*/}
 			<Nav onRouteChange={onRouteChange} route={route}/>
 			{route === 'signForm'
-				? <SignForm form={form} onRouteChange={onRouteChange} onFormChange={onFormChange}/>
+				? <SignForm form={form}
+							errorMessage={errorMessage}
+							onRouteChange={onRouteChange}
+							onFormChange={onFormChange}
+							onError={onError}/>
 				: <>
 					<Rank user={currentUser}/>
 					<ImageLinkForm onChange={onInputChange} onSubmit={onPictureSubmit}/>

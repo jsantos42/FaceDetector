@@ -139,6 +139,7 @@ app.post('/register', (req, res) => {
  */
 app.post('/signIn', (req, res) => {
 	const {email, password} = req.body;
+	const errorMessage = 'Wrong credentials.';
 	db.select('email', 'hash').from('login').where('email', email)
 		.then(data => {
 			bcrypt.compare(password, data[0].hash, (err, isPasswordValid) => {
@@ -151,12 +152,12 @@ app.post('/signIn', (req, res) => {
 						});
 				}
 				else
-					res.status(400).json('wrong credentials');
+					res.status(400).json(errorMessage);
 			})
 		})
 		.catch(err => {
 			console.log(err);
-			res.status(400).json('wrong credentials');
+			res.status(400).json(errorMessage);
 		});
 })
 
