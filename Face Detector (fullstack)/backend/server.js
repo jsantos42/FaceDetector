@@ -5,6 +5,9 @@
 const express = require('express');
 const app = express();
 
+// Read env variables from .env file
+require('dotenv').config();
+
 // Cross-Origin Resource Sharing (when in the middleware, prevents the "No
 // Access-Control-Allow-Origin" CORS block")
 const cors = require('cors');

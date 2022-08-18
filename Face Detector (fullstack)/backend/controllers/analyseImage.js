@@ -1,10 +1,9 @@
 //==============================================================================
 // API INITIALIZATION
 //==============================================================================
-const {myAPIKey} = require('../api');
 const Clarifai = require('clarifai');
 const app = new Clarifai.App({
-	apiKey: myAPIKey,
+	apiKey: process.env.API_KEY,
 })
 
 const analyseImage = (req, res) => {
