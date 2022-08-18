@@ -149,7 +149,7 @@ const App = () => {
 	
 	return (
 		<AppDiv>
-			{/*<ParticlesBg init={particlesInit}/>*/}
+			<ParticlesBg init={particlesInit}/>
 			<Nav onRouteChange={onRouteChange} route={route}/>
 			{route === 'signForm'
 				? <SignForm form={form}
