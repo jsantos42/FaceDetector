@@ -31,9 +31,9 @@ app.use(express.json()); // converts request body info to json format
 app.use(cors()); // prevents the "No Access-Control-Allow-Origin" CORS block
 
 // Listen
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
-	console.log(`app is running on port ${port}`);
+	console.log(`Server is running on port ${port}.`);
 })
 
 // Controllers
