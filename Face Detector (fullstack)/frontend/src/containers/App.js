@@ -14,6 +14,7 @@ import SignForm from "../components/signForm/SignForm";
 const serverURL = process.env.REACT_APP_SERVER_URL || 'http://localhost:3000';
 // console.log(serverURL)
 
+
 //==============================================================================
 // PARTICLES BACKGROUND
 //==============================================================================
@@ -143,6 +144,7 @@ const App = () => {
 			setForm('signIn');
 			setImageUrl('');
 			setErrorMessage('');
+			setFaceBoxes([]);
 		}
 		setCurrentUser(user);
 		setRoute(route);
