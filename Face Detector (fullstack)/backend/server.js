@@ -16,17 +16,27 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+console.log('THISSAAAAAAAAAAAAAAAAAAAAAAA', process.argv)
+
 // Connecting to the database
 const knex = require('knex');
-const db = knex({
-	client: 'pg',
-	connection: {
-		host: '127.0.0.1',
+const connectionObj = process.argv[2] ==='localserver'
+	? {
+		host: 'localhost',
 		// port : 5432,
-		// user : 'jas',
 		// password : '',
 		database: 'face-detector'
 	}
+	: {
+		connectionString: process.env.DATABASE_URL,
+		ssl: {
+				rejectUnauthorized: false
+		},
+	};
+
+const db = knex({
+	client: 'pg',
+	connection: connectionObj,
 });
 
 // Middleware
