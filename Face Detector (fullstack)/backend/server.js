@@ -16,8 +16,6 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-console.log('THISSAAAAAAAAAAAAAAAAAAAAAAA', process.argv)
-
 // Connecting to the database
 const knex = require('knex');
 const connectionObj = process.argv[2] ==='localserver'
