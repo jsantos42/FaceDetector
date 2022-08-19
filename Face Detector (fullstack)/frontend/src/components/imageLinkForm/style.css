@@ -6,6 +6,7 @@
 .formBg {
     z-index: 1;
     width: 80%;
+	min-width: 280px;
     max-width: 1000px;
     background:
             radial-gradient(black 15%, transparent 16%) 0 0,
@@ -18,12 +19,16 @@
 }
 
 .form {
-    padding: 2rem 0 ;
+	display: flex;
+	flex-wrap: wrap;
+    padding: 2rem 0;
     width: 100%;
+	min-width: 200px;
 }
 
 .form input {
     width: 60%;
+	min-width: 200px;
     max-width: 600px;
     padding: 0.5rem;
 }
@@ -31,10 +36,16 @@
 .form button {
     width: 20%;
     max-width: 100px;
-    min-width: 3rem;
+    min-width: 4rem;
     padding: 0.5rem;
 }
 
 .form button:hover {
     transform: scale(1.1);
+}
+
+::placeholder {
+	text-align: center;
+	font-weight: 600;
+	font-size: 0.7rem;
 }
