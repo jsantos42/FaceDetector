@@ -23,7 +23,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy:frontend": "npm build && cd ../.. && git subtree push --prefix Face\\ Detector\\ \\(fullstack\\)/frontend/ heroku-frontend master"
+    "deploy:frontend": "npm run build && cd ../.. && git subtree push --prefix Face\\ Detector\\ \\(fullstack\\)/frontend/ heroku-frontend master"
   },
   "eslintConfig": {
     "extends": [
