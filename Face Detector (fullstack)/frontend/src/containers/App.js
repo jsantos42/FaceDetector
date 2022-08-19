@@ -9,6 +9,12 @@ import FaceRecognition from "../components/FaceRecognition/FaceRecognition";
 import SignForm from "../components/signForm/SignForm";
 
 //==============================================================================
+// SERVER URL
+//==============================================================================
+const serverURL = process.env.REACT_APP_SERVER_URL || 'http://localhost:3000';
+// console.log(serverURL)
+
+//==============================================================================
 // PARTICLES BACKGROUND
 //==============================================================================
 // This must be passed as a parameter to the component, otherwise it will
@@ -66,7 +72,7 @@ const App = () => {
 	 */
 	// useEffect(() => {
 	// 	console.log('fetching')
-	// 	fetch('http://localhost:3000/')
+	// 	fetch(serverURL)
 	// 		.then(res => res.json())
 	// 		.then(console.log)
 	// }, [])
@@ -91,7 +97,7 @@ const App = () => {
 	operator to pass the rest of the object.
 	 */
 	const incrementUserEntries = () => {
-		fetch('http://localhost:3000/entries', {
+		fetch(`${serverURL}/entries`, {
 			method: 'put',
 			headers: {'content-type': 'application/json'},
 			body: JSON.stringify({id: currentUser.id}),
@@ -116,7 +122,7 @@ const App = () => {
 	const onPictureSubmit = (e) => {
 		setImageUrl(input);
 		if (input) {
-			fetch('http://localhost:3000/analyseImage', {
+			fetch(`${serverURL}/analyseImage`, {
 				method: 'post',
 				headers: {'content-type': 'application/json'},
 				body: JSON.stringify({input}),
@@ -147,7 +153,8 @@ const App = () => {
 			<ParticlesBg init={particlesInit}/>
 			<Nav onRouteChange={onRouteChange} route={route}/>
 			{route === 'signForm'
-				? <SignForm form={form}
+				? <SignForm serverURL={serverURL}
+							form={form}
 							errorMessage={errorMessage}
 							onRouteChange={onRouteChange}
 							onFormChange={onFormChange}

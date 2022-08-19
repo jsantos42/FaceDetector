@@ -2,7 +2,7 @@ import './style.css'
 
 /* Note that in JSX, the html attribute for (present in the labels) should be
  renamed to htmlFor, since 'for' is a JS keyword */
-const SignForm = ({form, errorMessage, onRouteChange, onFormChange, onError}) => {
+const SignForm = ({serverURL, form, errorMessage, onRouteChange, onFormChange, onError}) => {
     const formName = (form === 'signIn') ? 'Sign In' : 'Register';
     const name = (form === 'signIn')
         ? null
@@ -30,7 +30,7 @@ const SignForm = ({form, errorMessage, onRouteChange, onFormChange, onError}) =>
 				.filter(element => ['name', 'email', 'password'].includes(element.name))
 				.map(element => [element.name, element.value]))			// (1)
 		
-		fetch(`http://localhost:3000/${form}`, {
+		fetch(`${serverURL}/${form}`, {
 			method: 'post',
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify(formData)								// (2)
