@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "start:dev": "nodemon server.js localserver",
-    "deploy:backend": "cd ../.. && git subtree push --prefix Face\\ Detector\\ \\(fullstack\\)/backend/ heroku-backend master"
+    "deploy:backend": "cd ../.. && git subtree push --prefix Face\\ Detector\\ \\(fullstack\\)/backend/ heroku-backend master",
+    "force:deploy:backend": "cd ../.. && git push heroku-backend `git subtree split --prefix Face\\ Detector\\ \\(fullstack\\)/backend/ master`:master --force"
   },
   "keywords": [],
   "author": "",
