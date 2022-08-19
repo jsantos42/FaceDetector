@@ -1,11 +1,6 @@
 import {useEffect, useState} from "react";
 import {loadFull} from "tsparticles";
-import Clarifai from 'clarifai'
-// For some reason, I cannot import styled-components the normal way (probably
-// because of the Clarify API making me use ReactApp v4
-// import styled from "styled-components";
-import styled from "styled-components/dist/styled-components.js";
-
+import styled from "styled-components";
 import Nav from "../components/nav/Nav";
 import ImageLinkForm from "../components/imageLinkForm/ImageLinkForm";
 import Rank from "../components/rank/Rank";
