@@ -53,7 +53,7 @@ const AppDiv = styled.div`
 const App = () => {
 	const [input, setInput] = useState('');
 	const [imageUrl, setImageUrl] = useState('');
-	const [faceBox, setFaceBox] = useState([]);
+	const [faceBoxes, setFaceBoxes] = useState([]);
 	const [route, setRoute] = useState('signForm');
 	const [form, setForm] = useState('signIn');
 	const [currentUser, setCurrentUser] = useState({});
@@ -71,7 +71,7 @@ const App = () => {
 	// 		.then(console.log)
 	// }, [])
 	
-	const getFaceBox = (data) => {
+	const getFaceBoxes = (data) => {
 		if (data.outputs[0].data.regions)
 			return data.outputs[0].data.regions.map(i => {
 				let box = i.region_info.bounding_box;
@@ -125,7 +125,7 @@ const App = () => {
 		  	.then(response => {
 				if (response && typeof response === "object") {
 					incrementUserEntries();
-					setFaceBox(getFaceBox(response))
+					setFaceBoxes(getFaceBoxes(response))
 				}
 			})
 		  	.catch(error => console.log(error));
@@ -155,7 +155,7 @@ const App = () => {
 				: <>
 					<Rank user={currentUser}/>
 					<ImageLinkForm onChange={onInputChange} onSubmit={onPictureSubmit}/>
-					<FaceRecognition imgUrl={imageUrl} box={faceBox}/>
+					<FaceRecognition imgUrl={imageUrl} box={faceBoxes}/>
 				</>
 			}
 		</AppDiv>
