@@ -10,8 +10,8 @@ COPY . .
 
 # Commands to run during the image building (image building steps)
 RUN npm install
-RUN apt update # Needed to download the packages list
-RUN apt install -y vim 
+#RUN apt update # Needed to download the packages list
+#RUN apt install -y vim
 
 # Executes by default when launching the built image (has to be unique)
 CMD ["/bin/bash"]
