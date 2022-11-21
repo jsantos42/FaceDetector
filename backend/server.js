@@ -8,6 +8,8 @@ const app = express();
 // Read env variables from .env file
 require('dotenv').config();
 
+const  morgan = require('morgan')
+
 // Cross-Origin Resource Sharing (when in the middleware, prevents the "No
 // Access-Control-Allow-Origin" CORS block")
 const cors = require('cors');
@@ -38,6 +40,7 @@ const db = knex({
 });
 
 // Middleware
+app.use(morgan('combined'))
 app.use(express.json()); // converts request body info to json format
 app.use(cors()); // prevents the "No Access-Control-Allow-Origin" CORS block
 
@@ -66,7 +69,8 @@ const {entries} = require("./controllers/entries");
  *	Body: (empty)
  *	@return an array with all users on the database
  */
-app.get('/', (req, res) => users(req, res, db));
+// app.get('/', (req, res) => users(req, res, db));
+app.get('/', (req, res) => res.send('ITS WORKING'));
 
 
 /**
