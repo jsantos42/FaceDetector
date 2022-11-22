@@ -9,7 +9,7 @@ services:
     command: npm run start:dev    # Command to run on starting the service
     #working_dir: /app            # Override working directory from dockerfile
     ports:
-      - "3000:3000"               # Portmapping
+      - "3000:3000"               # Port-mapping
     volumes:
       # Mount the host's current dir in the specified location
       - ./:/usr/src/smart-brain-api:ro
