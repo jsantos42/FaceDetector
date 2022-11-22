@@ -1,14 +1,15 @@
 version: '3.6'
 
 services:
-  smart-brain-api:
-    container_name: backend
-    #image: node:16.18.1
-    build: ./
-    command: npm run start:dev
-    #working_dir: /app
+  # Backend API
+  smart-brain-api:                # Service Name
+    container_name: backend       # Container Name
+    #image: node:16.18.1          # Build container from an existing image
+    build: ./                     # Build container from an image created with a dockerfile
+    command: npm run start:dev    # Command to run on starting the service
+    #working_dir: /app            # Override working directory from dockerfile
     ports:
-      - "3000:3000"
+      - "3000:3000"               # Portmapping
     volumes:
       # Mount the host's current dir in the specified location
       - ./:/usr/src/smart-brain-api:ro
