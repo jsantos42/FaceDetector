@@ -5,7 +5,12 @@ services:
     container_name: backend
     #image: node:16.18.1
     build: ./
-    command: npm start
+    command: npm run start:dev
     #working_dir: /app
     ports:
       - "3000:3000"
+    volumes:
+      # Mount the host's current dir in the specified location
+      - ./:/usr/src/smart-brain-api:ro
+      # Ignore specified location (avoids error using MacOS's bcrypt in Linux)
+      - /usr/src/smart-brain-api/node_modules
