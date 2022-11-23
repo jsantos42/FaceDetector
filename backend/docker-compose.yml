@@ -8,11 +8,8 @@ services:
     build: ./                     # Build container from an image created with a dockerfile
     command: npm run start:dev    # Command to run on starting the service
     #working_dir: /app            # Override working directory from dockerfile
-#    environment:
-#      POSTGRES_HOST: postgres
-#      POSTGRES_DB: smart-brain-docker
-#      POSTGRES_USER: sally
-#      POSTGRES_PASSWORD:  secret
+    environment:
+      POSTGRES_URI: postgres://sally:secret@postgres:5432/smart-brain-docker
     links:
       - postgres
     ports:

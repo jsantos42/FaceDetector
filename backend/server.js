@@ -21,13 +21,7 @@ const saltRounds = 10;
 // Connecting to the database
 const knex = require('knex');
 const connectionObj = process.argv[2] ==='localserver'
-	? {
-		host: process.env.POSTGRES_HOST,
-		database: process.env.POSTGRES_DB,
-		user: process.env.POSTGRES_USER,
-		password: process.env.POSTGRES_PASSWORD
-		// port : 5432,
-	}
+	? process.env.POSTGRES_URI
 	: {
 		connectionString: process.env.DATABASE_URL,
 		ssl: {
