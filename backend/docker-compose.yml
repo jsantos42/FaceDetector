@@ -8,6 +8,13 @@ services:
     build: ./                     # Build container from an image created with a dockerfile
     command: npm run start:dev    # Command to run on starting the service
     #working_dir: /app            # Override working directory from dockerfile
+#    environment:
+#      POSTGRES_HOST: postgres
+#      POSTGRES_DB: smart-brain-docker
+#      POSTGRES_USER: sally
+#      POSTGRES_PASSWORD:  secret
+    links:
+      - postgres
     ports:
       - "3000:3000"               # Port-mapping
     volumes:
@@ -15,3 +22,15 @@ services:
       - ./:/usr/src/smart-brain-api:ro
       # Ignore specified location (avoids error using MacOS's bcrypt in Linux)
       - /usr/src/smart-brain-api/node_modules
+
+  # Postgres
+  postgres:
+    # No need for container_name since this image already has it set!
+    image: postgres
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: smart-brain-docker
+      POSTGRES_USER: sally
+      POSTGRES_PASSWORD:  secret
+    ports:
+      - "5432:5432"
